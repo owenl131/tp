@@ -10,19 +10,16 @@ import java.io.IOException;
 
 public class Duke {
 
-    private static Storage storage;
-    private static Ui ui;
-    private static State state;
-    private static String filePath  = ""; //place holder for now, wait till implementation of storage
+    private Storage storage;
+    private Ui ui;
+    private State state;
 
     private static final String IO_ERROR_MESSAGE = "File not found sorry.";
 
-    public Duke(String filePath) {
+    public Duke() {
         ui = new Ui();
         state = new State();
-
         storage = new Storage();
-
         storage.openPreviousState(state, ui);
     }
 
@@ -33,11 +30,13 @@ public class Duke {
     public void run() {
         startSequence();
         boolean isExit = false;
-
         while (!isExit) {
             try {
                 ui.displayUserPrompt(state.getSemester());
                 String userFullCommand = ui.readNext();
+                if (userFullCommand.trim().equals("")) {
+                    continue;
+                }
                 ui.displayDivider();
                 Command command = Parser.parse(userFullCommand);
                 command.execute(state, ui, storage);
@@ -71,7 +70,6 @@ public class Duke {
      * Main entry-point for the java.duke.Duke application.
      */
     public static void main(String[] args) {
-
-        new Duke(filePath).run();
+        new Duke().run();
     }
 }

@@ -1,7 +1,10 @@
 package seedu.duke.utils;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
+
+import seedu.duke.command.ExitCommand;
 
 //@author CheahHaoYi-reused
 //Reused from CheahHaoYi/ip Ui class with slight modification
@@ -40,7 +43,11 @@ public class Ui {
     }
 
     public String readNext() {
-        return scanner.nextLine().trim();
+        try {
+            return scanner.nextLine().trim();
+        } catch (NoSuchElementException | IllegalStateException e) {
+            return ExitCommand.COMMAND_WORD;
+        }
     }
 
     /**
